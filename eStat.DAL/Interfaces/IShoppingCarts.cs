@@ -8,6 +8,7 @@ namespace eStat.DAL.Interfaces
         ShoppingCart? GetByUid(Guid uid);
         ShoppingCart Add(ShoppingCart shoppingCart);
         void Update(ShoppingCart shoppingCart);
+        void AddProduct(ShoppingCartProduct shoppingCartProduct);
         void Delete(Guid uid);
         ShoppingCart GetShoppingCartByUser(Guid userUid);
     }

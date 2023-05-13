@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eStat.Common.Enums
+namespace eStat.DAL.Interfaces
 {
-    public enum Roles
+    public interface IShoppingCartProducts
     {
-        Administrator = 0,
-        Retailer = 1,
-        Purchaser = 2
+        void Delete(Guid uid);
     }
 }

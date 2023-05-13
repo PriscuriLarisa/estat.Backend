@@ -9,6 +9,7 @@ namespace eStat.BLL.Interfaces
         User Add(UserCreate user);
         void Delete(Guid uid);
         void Update(User user);
+        void UpdateUserInfo(UserInfo user);
         User? GetByUid(Guid uid);
         UserInfo? GetUserInfo(Guid uid);
         UserInfo GetByEmail(string email);

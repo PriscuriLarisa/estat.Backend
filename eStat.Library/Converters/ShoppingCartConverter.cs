@@ -8,6 +8,7 @@
             {
                 ShoppingCartGUID = shoppingCart.ShoppingCartGUID,
                 UserGUID = shoppingCart.UserGUID,
+                User = UserConverter.ToDTOInfo(shoppingCart.User),
                 Products = shoppingCart.Products.Select(p => ShoppingCartProductConverter.ToDTO(p)).ToList(),
             };
         }

@@ -15,7 +15,9 @@ namespace eStat.BLL.Configuration
             services.AddScoped<IUserProducts, UserProductsBL>();
             services.AddScoped<IOrderProducts, OrderProductsBL>();
             services.AddScoped<IPurchases, PurchasesBL>();
-            services.AddScoped<IOrders, OrdersBL>();
+            services.AddScoped<IOrder, OrdersBL>();
+            services.AddScoped<IShoppingCarts, ShoppingCartsBL>();
+            services.AddScoped<IShoppingCartProducts, ShoppingCartProductsBL>();
             services.AddScoped<IPurchaseProducts, PurchaseProductsBL>();
             services.AddScoped<IUsers, UsersBL>();
 

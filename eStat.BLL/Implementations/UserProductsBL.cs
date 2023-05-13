@@ -38,6 +38,12 @@ namespace eStat.BLL.Implementations
             return _dalContext.UserProducts.GetUserProductsByProduct(productUid).Select(p => UserProductConverter.ToDTOWithUser(p)).ToList();
         }
 
+        public List<UserProduct> GetUserProductsByProductInBatches(Guid userUid, int batchNb)
+        {
+            List<UserProduct> allProducts = GetUserProductsByUser(userUid);
+            return allProducts.Skip(batchNb * 20).Take(20).ToList();
+        }
+
         public List<UserProduct> GetUserProductsByUser(Guid userUid)
         {
             return _dalContext.UserProducts.GetUserProductsByUser(userUid).Select(p => UserProductConverter.ToDTO(p)).ToList();

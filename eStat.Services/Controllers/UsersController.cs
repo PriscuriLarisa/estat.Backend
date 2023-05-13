@@ -10,7 +10,7 @@ namespace eStat.Services.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserInfo>))]
         public IActionResult GetAll()
         {
-            return Ok(BusinessContext.UsersBL.GetAll());
+            return Ok(BusinessContext.UsersBL.GetAllInfo());
         }
 
         [HttpPost]
@@ -25,12 +25,34 @@ namespace eStat.Services.Controllers
             return new ObjectResult(BusinessContext.UsersBL.Add(user)) { StatusCode = StatusCodes.Status201Created };
         }
 
+        [HttpPut("userInfo")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public IActionResult UpdateUserInfo([FromBody] UserInfo user)
+        {
+            BusinessContext.UsersBL.UpdateUserInfo(user);
+            return Ok();
+        }
+
         [HttpGet("{uid:Guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetByUid([FromRoute] Guid uid)
         {
             User? user = BusinessContext.UsersBL.GetByUid(uid);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        [HttpGet("userInfo/{uid:Guid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetUserInfo([FromRoute] Guid uid)
+        {
+            UserInfo? user = BusinessContext.UsersBL.GetUserInfo(uid);
             if (user == null)
             {
                 return NotFound();

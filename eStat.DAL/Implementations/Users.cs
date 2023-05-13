@@ -90,5 +90,20 @@ namespace eStat.DAL.Implementations
             }
             _context.Users.Remove(user);
         }
+
+        public void UpdateUserInfo(User user)
+        {
+            User oldUser = _context.Users.FirstOrDefault(u => u.UserGUID == user.UserGUID);
+            if (oldUser == null) return;
+            oldUser.FirstName = user.FirstName;
+            oldUser.LastName = user.LastName;
+            oldUser.Role = user.Role;
+            oldUser.Email = user.Email;
+            oldUser.Membership = user.Membership;
+            oldUser.Birthday = user.Birthday;
+
+            _context.Users.Update(oldUser);
+            _context.SaveChanges();
+        }
     }
 }

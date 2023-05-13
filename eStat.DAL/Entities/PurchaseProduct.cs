@@ -14,5 +14,6 @@ namespace eStat.DAL.Entities
         public Guid UserProductGUID { get; set; }
         public UserProduct UserProduct { get; set; }
         public float Price { get; set; }
+        public int Quantity { get; set; }
     }
 }

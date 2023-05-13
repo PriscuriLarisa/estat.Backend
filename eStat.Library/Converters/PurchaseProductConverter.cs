@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace eStat.Library.Converters
+﻿namespace eStat.Library.Converters
 {
     public static class PurchaseProductConverter
     {
@@ -15,8 +9,9 @@ namespace eStat.Library.Converters
                 PurchaseProductGUID = purchaseProduct.PurchaseProductGUID,
                 PurchaseGUID = purchaseProduct.PurchaseGUID,
                 UserProductGUID = purchaseProduct.UserProductGUID,
-                Product = UserProductConverter.ToDTO(purchaseProduct.UserProduct),
-                Price = purchaseProduct.Price
+                Product = UserProductConverter.ToDTOWithUser(purchaseProduct.UserProduct),
+                Price = purchaseProduct.Price,
+                Quantity = purchaseProduct.Quantity
             };
         }
 
@@ -28,7 +23,8 @@ namespace eStat.Library.Converters
                 PurchaseGUID = purchaseProduct.PurchaseGUID,
                 UserProductGUID = purchaseProduct.UserProductGUID,
                 //Product = UserProductConverter.ToEntity(purchaseProduct.Product),
-                Price = purchaseProduct.Price
+                Price = purchaseProduct.Price,
+                Quantity = purchaseProduct.Quantity
             };
         }
     }

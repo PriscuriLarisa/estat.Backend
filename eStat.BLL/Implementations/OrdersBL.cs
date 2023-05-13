@@ -6,7 +6,7 @@ using eStat.Library.Models;
 
 namespace eStat.BLL.Implementations
 {
-    public class OrdersBL : BusinessObject, IOrders
+    public class OrdersBL : BusinessObject, IOrder
     {
         public OrdersBL(IDALContext dalContext) : base(dalContext)
         {

@@ -16,6 +16,10 @@ namespace eStat.DAL.Implementations
         {
             EntityEntry<ShoppingCart>? addedShoppingCart = _context.ShoppingCarts.Add(shoppingCart);
             _context.SaveChanges();
+            return _context.ShoppingCarts
+                .Include(s => s.Products)
+                .Include(s => s.User)
+                .FirstOrDefault(p => p.ShoppingCartGUID == addedShoppingCart.Entity.ShoppingCartGUID);
             return addedShoppingCart.Entity;
         }
 
@@ -29,14 +33,25 @@ namespace eStat.DAL.Implementations
             return _context.ShoppingCarts
                 .Include(s => s.Products)
                     .ThenInclude(p => p.UserProduct)
-                    .ThenInclude(p => p!.Quantity)
+                    .ThenInclude(up => up.Product)
+                .Include(s => s.Products)
+                    .ThenInclude(p => p.UserProduct)
+                    .ThenInclude(up => up.User)
                 .Include(s => s.User)
                 .ToList();
         }
 
         public ShoppingCart? GetByUid(Guid uid)
         {
-            throw new NotImplementedException();
+            return _context.ShoppingCarts
+                .Include(s => s.Products)
+                    .ThenInclude(p => p.UserProduct)
+                    .ThenInclude(up => up.Product)
+                .Include(s => s.Products)
+                    .ThenInclude(p => p.UserProduct)
+                    .ThenInclude(up => up.User)
+                .Include(s => s.User)
+                .FirstOrDefault(s => s.ShoppingCartGUID == uid);
         }
 
         public ShoppingCart GetShoppingCartByUser(Guid userUid)
@@ -44,17 +59,39 @@ namespace eStat.DAL.Implementations
             return _context.ShoppingCarts
                 .Include(s => s.Products)
                     .ThenInclude(p => p.UserProduct)
-                    .ThenInclude(p => p!.Quantity)
+                    .ThenInclude(up => up.Product)
+                .Include(s => s.Products)
+                    .ThenInclude(p => p.UserProduct)
+                    .ThenInclude(up => up.User)
                 .Include(s => s.User)
                 .FirstOrDefault(s => s.UserGUID == userUid);
         }
 
         public void Update(ShoppingCart shoppingCart)
         {
+            _context.ChangeTracker.Clear();
             ShoppingCart oldShoppingCart = _context.ShoppingCarts.FirstOrDefault(s => s.ShoppingCartGUID == shoppingCart.ShoppingCartGUID);
             if (oldShoppingCart == null) return;
-            oldShoppingCart.UserGUID = oldShoppingCart.UserGUID;
-            oldShoppingCart.Products = oldShoppingCart.Products;
+            oldShoppingCart.Products = shoppingCart.Products;
+
+            _context.ShoppingCarts.Update(shoppingCart);
+            _context.SaveChanges();
+        }
+
+        public void AddProduct(ShoppingCartProduct shoppingCartProduct)
+        {
+            _context.ChangeTracker.Clear();
+            ShoppingCart oldShoppingCart = GetByUid(shoppingCartProduct.ShoppingCartGUID ?? Guid.Empty);
+            if (oldShoppingCart == null) return;
+            ShoppingCartProduct existingShoppingCartProduct = oldShoppingCart.Products.FirstOrDefault(p => p.UserProductGUID == shoppingCartProduct.UserProductGUID);
+            if(existingShoppingCartProduct == null)
+            {
+                oldShoppingCart.Products.Add(shoppingCartProduct);
+            }
+            else
+            {
+                existingShoppingCartProduct.Quantity += shoppingCartProduct.Quantity;
+            }
 
             _context.ShoppingCarts.Update(oldShoppingCart);
             _context.SaveChanges();

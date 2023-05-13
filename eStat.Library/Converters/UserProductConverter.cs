@@ -19,6 +19,7 @@
         {
             return new Models.UserProduct
             {
+                UserProductGUID = userProduct.UserProductGUID,
                 ProductGUID = userProduct.ProductGUID,
                 Price = userProduct.Price,
                 Product = ProductConverter.ToDTO(userProduct.Product),
@@ -32,6 +33,7 @@
         {
             return new DAL.Entities.UserProduct
             {
+                UserProductGUID = userProduct.UserProductGUID,
                 ProductGUID = userProduct.ProductGUID,
                 UserGUID = userProduct.UserGUID,
                 Price = userProduct.Price,

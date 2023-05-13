@@ -2,7 +2,7 @@
 
 namespace eStat.BLL.Interfaces
 {
-    public interface IOrders
+    public interface IOrder
     {
         List<Order> GetAll();
         Order? GetByUid(Guid uid);

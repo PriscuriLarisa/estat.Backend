@@ -20,11 +20,26 @@ namespace eStat.Services.Controllers
             return Ok(BusinessContext.UserProductsBL.GetUserProductsByProduct(productId));
         }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserProduct>))]
+        public IActionResult Update([FromBody] UserProduct userProduct)
+        {
+            BusinessContext.UserProductsBL.Update(userProduct);
+            return Ok();
+        }
+
         [HttpGet("user/{productId}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserProduct>))]
         public IActionResult GetUserProductsByUser([FromRoute] Guid productId)
         {
             return Ok(BusinessContext.UserProductsBL.GetUserProductsByUser(productId));
+        }
+
+        [HttpGet("user/{userId}/{batchNb}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserProduct>))]
+        public IActionResult GetUserProductsByUserInBatches([FromRoute] Guid userId, [FromRoute] int batchNb)
+        {
+            return Ok(BusinessContext.UserProductsBL.GetUserProductsByProductInBatches(userId, batchNb));
         }
     }
 }

@@ -9,7 +9,8 @@
                 ShoppingCartProductGUID = shoppingCartProduct.ShoppingCartProductGUID,
                 ShoppingCartGUID = shoppingCartProduct.ShoppingCartGUID,
                 UserProductGUID = shoppingCartProduct.UserProductGUID,
-                UserProduct = UserProductConverter.ToDTO(shoppingCartProduct.UserProduct)
+                UserProduct = UserProductConverter.ToDTOWithUser(shoppingCartProduct.UserProduct),
+                Quantity = shoppingCartProduct.Quantity
             };
         }
 
@@ -20,7 +21,8 @@
                 ShoppingCartProductGUID = shoppingCartProduct.ShoppingCartProductGUID,
                 ShoppingCartGUID = shoppingCartProduct.ShoppingCartGUID,
                 UserProductGUID = shoppingCartProduct.UserProductGUID,
-                UserProduct = UserProductConverter.ToEntity(shoppingCartProduct.UserProduct)
+                UserProduct = null,
+                Quantity = shoppingCartProduct.Quantity
             };
         }
     }

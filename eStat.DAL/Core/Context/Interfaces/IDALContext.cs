@@ -20,5 +20,6 @@ namespace eStat.DAL.Core.Context.Interfaces
         public IPurchaseProducts PurchaseProducts { get; set; }
         public IPurchases Purchases { get; set; }
         public IShoppingCarts ShoppingCarts { get; set; }
+        public IShoppingCartProducts ShoppingCartProducts { get; set; }
     }
 }

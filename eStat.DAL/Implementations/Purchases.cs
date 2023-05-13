@@ -46,9 +46,12 @@ namespace eStat.DAL.Implementations
         public List<Purchase> GetPurchasesByUser(Guid userUid)
         {
             return _context.Purchases
-                .Include(p => p.Products)
-                .ThenInclude(pp => pp.UserProduct)
-                .Include(p => p.User)
+                .Include(s => s.Products)
+                    .ThenInclude(p => p.UserProduct)
+                    .ThenInclude(up => up.Product)
+                .Include(s => s.Products)
+                    .ThenInclude(p => p.UserProduct)
+                    .ThenInclude(up => up.User)
                 .Where(user => user.UserGUID == userUid)
                 .ToList();
         }

@@ -58,5 +58,10 @@ namespace eStat.BLL.Implementations
         {
             _dalContext.Users.Update(UserConverter.ToEntity(user));
         }
+
+        public void UpdateUserInfo(UserInfo user)
+        {
+            _dalContext.Users.UpdateUserInfo(UserConverter.ToEntity(user));
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace eStat.DAL.Core.Context
             services.AddScoped<IOrderProducts, OrderProducts>();
             services.AddScoped<IOrders, Orders>();
             services.AddScoped<IShoppingCarts, ShoppingCarts>();
+            services.AddScoped<IShoppingCartProducts, ShoppingCartProducts>();
             services.AddScoped<IPurchaseProducts, PurchaseProducts>();
             services.AddScoped<IPurchases, Purchases>();
             //services.AddScoped<ISearches, Searches>();

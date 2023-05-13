@@ -11,5 +11,6 @@ namespace eStat.BLL.Interfaces
         void Delete(Guid uid);
         List<UserProduct> GetUserProductsByUser(Guid userUid);
         List<UserProduct> GetUserProductsByProduct(Guid productUid);
+        List<UserProduct> GetUserProductsByProductInBatches(Guid userUid, int batchNb);
     }
 }

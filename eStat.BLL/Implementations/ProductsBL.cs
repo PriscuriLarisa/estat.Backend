@@ -77,10 +77,11 @@ namespace eStat.BLL.Implementations
             List<DAL.Entities.Product> allProducts = _dalContext.Products.GetAll();
             if(keyWords != null && keyWords.Count > 0)
             {
-                allProducts = allProducts.Where(p => keyWords.Any(kw => p.Characteristics.Contains(kw) || p.Name.Contains(kw))).ToList();
+                allProducts = SortingHelper.GetSortedProducts(allProducts.Where(p => keyWords.Any(kw => p.Name.Contains(kw))).ToList(), sortingCriteria);
+                allProducts = SortingHelper.GetSortedProducts(allProducts.Concat(allProducts.Where(p => keyWords.Any(kw => p.Characteristics.Contains(kw))).ToList()).ToList(), sortingCriteria);
             }
-            List<DAL.Entities.Product> products = SortingHelper.GetSortedProducts(allProducts, sortingCriteria);
-            return products.Skip(pageNumber * productsPerPage).Take(productsPerPage).Select(p => ProductConverter.ToDTO(p)).ToList();
+            //List<DAL.Entities.Product> products = SortingHelper.GetSortedProducts(allProducts, sortingCriteria);
+            return allProducts.Skip(pageNumber * productsPerPage).Take(productsPerPage).Select(p => ProductConverter.ToDTO(p)).ToList();
         }
 
         public void Update(Product product)

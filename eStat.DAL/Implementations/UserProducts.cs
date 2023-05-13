@@ -64,7 +64,7 @@ namespace eStat.DAL.Implementations
 
         public void Update(UserProduct userProduct)
         {
-            UserProduct oldUserProduct = _context.UserProducts.FirstOrDefault(u => u.UserGUID == userProduct.UserGUID);
+            UserProduct oldUserProduct = _context.UserProducts.FirstOrDefault(u => u.UserProductGUID == userProduct.UserProductGUID);
             if (oldUserProduct == null) return;
             oldUserProduct.Price = userProduct.Price;
             oldUserProduct.Quantity = userProduct.Quantity;

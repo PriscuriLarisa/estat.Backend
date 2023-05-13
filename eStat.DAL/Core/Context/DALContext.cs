@@ -15,6 +15,7 @@ namespace eStat.DAL.Core.Context
         public IPurchaseProducts PurchaseProducts { get; set; }
         public IPurchases Purchases { get; set; }
         public IShoppingCarts ShoppingCarts { get; set; }
+        public IShoppingCartProducts ShoppingCartProducts { get; set; }
 
         public DALContext(IUsers users,
             IProducts products,
@@ -23,7 +24,8 @@ namespace eStat.DAL.Core.Context
             IOrders orders,
             IPurchaseProducts purchaseProducts,
             IPurchases purchases,
-            IShoppingCarts shoppingCarts)
+            IShoppingCarts shoppingCarts,
+            IShoppingCartProducts shoppingCartProducts)
         {
             Users = users;
             Products = products;
@@ -35,6 +37,7 @@ namespace eStat.DAL.Core.Context
             PurchaseProducts = purchaseProducts;
             Purchases = purchases;
             ShoppingCarts = shoppingCarts;
+            ShoppingCartProducts = shoppingCartProducts;
         }
     }
 }

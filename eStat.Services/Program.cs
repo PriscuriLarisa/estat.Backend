@@ -71,7 +71,7 @@ void SeedData()
                 FirstName = firstNames[i],
                 LastName = lastNames[i],
                 Email = $"{firstNames[i]}.{lastNames[i]}@gmail.com",
-                Role = eStat.Common.Enums.Roles.Owner,
+                Role = eStat.Common.Enums.Roles.Retailer,
                 Password = $"{firstNames[i]}{lastNames[i]}",
                 Birthday = DateHelper.GetRandomDate(),
                 Membership = eStat.Common.Enums.Memberships.OwnerFirstTier
@@ -162,6 +162,6 @@ app.UseRouting();
 app.MapControllers();
 
 //await DBContextMigrationHelper.Migrate(app);
-SeedData();
+//SeedData();
 
 app.Run();
