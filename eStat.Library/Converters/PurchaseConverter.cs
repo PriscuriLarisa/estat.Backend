@@ -9,7 +9,8 @@
                 PurchaseGUID = purchase.PurchaseGUID,
                 UserGUID = purchase.UserGUID,
                 Date = purchase.Date,
-                Products =  purchase.Products.Select(p => PurchaseProductConverter.ToDTO(p)).ToList()
+                Products =  purchase.Products.Select(p => PurchaseProductConverter.ToDTO(p)).ToList(),
+                Address = purchase.Address,
             };
         }
 
@@ -20,6 +21,7 @@
                 PurchaseGUID = purchase.PurchaseGUID,
                 UserGUID = purchase.UserGUID,
                 Date = purchase.Date,
+                Address = purchase.Address,
                 //Products = purchase.Products.Select(p => PurchaseProductConverter.ToEntity(p)).ToList()
             };
         }

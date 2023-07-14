@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,6 +21,10 @@
   <ItemGroup>
     <ProjectReference Include="..\eStat.DAL\eStat.DAL.csproj" />
     <ProjectReference Include="..\eStat.Library\eStat.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MLLogic\SolutionItems\Scripts\" />
   </ItemGroup>
 
 </Project>

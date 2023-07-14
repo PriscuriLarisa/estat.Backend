@@ -14,5 +14,7 @@ namespace eStat.BLL.Interfaces
         UserInfo? GetUserInfo(Guid uid);
         UserInfo GetByEmail(string email);
         UserInfo Login(UserLogin userLogin);
+
+        UserInfo GetUserByEmailAndPassword(UserLogin userLogin);
     }
 }

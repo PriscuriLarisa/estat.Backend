@@ -16,7 +16,7 @@ namespace eStat.Library.Converters
                 ProductGUID= search.ProductGUID,
                 Product = ProductConverter.ToDTO(search.Product),
                 UserGUID = search.UserGUID,
-                User = UserConverter.ToDTO(search.User),
+                User = UserConverter.ToDTOInfo(search.User),
                 Date = search.Date
             };
         }

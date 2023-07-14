@@ -26,9 +26,12 @@ namespace eStat.DAL.Core.Context
             services.AddScoped<IShoppingCartProducts, ShoppingCartProducts>();
             services.AddScoped<IPurchaseProducts, PurchaseProducts>();
             services.AddScoped<IPurchases, Purchases>();
-            //services.AddScoped<ISearches, Searches>();
             //services.AddScoped<IProductRequests, ProductRequests>();
+            services.AddScoped<ISearches, Searches>();
+            services.AddScoped<INotifications, Notifications>();
             services.AddScoped<IUsers, Users>();
+            services.AddScoped<IPriceChanges, PriceChanges>();
+            services.AddScoped<IPricePredictions, PricePredictions>();
             services.AddScoped<IDALContext, DALContext>();
 
             return services;

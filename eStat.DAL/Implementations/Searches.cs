@@ -16,7 +16,8 @@ namespace eStat.DAL.Implementations
         {
             EntityEntry<Search>? addedProduct = _context.Searches.Add(search);
             _context.SaveChanges();
-            return addedProduct.Entity;
+            var newSearch = GetByUid(addedProduct.Entity.SearchGUID);
+            return newSearch;
         }
 
         public void Delete(Guid uid)

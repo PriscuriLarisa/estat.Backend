@@ -16,7 +16,7 @@ namespace eStat.DAL.Entities
         public Guid UserGUID { get; set; }
         public User? User { get; set; }
         [ForeignKey("Product")]
-        public Guid? ProductGUID { get; set; }
+        public Guid ProductGUID { get; set; }
         public Product? Product { get; set; } 
         public int Quantity { get; set; }
         public float Price { get; set; }

@@ -18,11 +18,11 @@ namespace eStat.Services.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult Add([FromBody] UserCreate user)
         {
-            if (!ModelState.IsValid)
-            {
+            var createdUser = BusinessContext.UsersBL.Add(user);
+            if (createdUser == null)
                 return BadRequest();
-            }
-            return new ObjectResult(BusinessContext.UsersBL.Add(user)) { StatusCode = StatusCodes.Status201Created };
+            
+            return new ObjectResult(createdUser) { StatusCode = StatusCodes.Status201Created };
         }
 
         [HttpPut("userInfo")]

@@ -33,6 +33,9 @@ namespace eStat.DAL.Implementations
         {
             return _context.PurchaseProducts
                .Include(op => op.UserProduct)
+                    .ThenInclude(op => op.Product)
+                .Include(op => op.UserProduct)
+                    .ThenInclude(op => op.User)
                .Include(op => op.Purchase)
                .ToList();
         }

@@ -66,7 +66,7 @@ namespace eStat.DAL.Implementations
 
         private void DeleteOrder(Guid uid)
         {
-            Order order = _context.Orders.Include(order => order.Products).FirstOrDefault(order => order.UserGUID == uid);
+            Order order = _context.Orders.Include(order => order.Products).FirstOrDefault(order => order.OrderGUID == uid);
             if (order == null)
                 return;
 

@@ -1,12 +1,27 @@
 using eStat.BLL.Configuration;
 using eStat.BLL.Implementations;
 using eStat.BLL.Interfaces;
+using eStat.BLL.Jobs;
+using eStat.BLL.MLLogic;
+using eStat.BLL.MLLogic.Interfaces;
 using eStat.DAL.Core.Context;
-using eStat.Library.Helpers;
+using eStat.DAL.Entities;
+using eStat.DAL.Implementations;
 using eStat.Library.Models;
+using Serilog;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.File($"Logs/{String.Format("{0}", DateTime.Now.ToString("dd_MM_yyyy"))}.log")
+    .CreateLogger();
+
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -32,136 +47,86 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-void SeedData()
+void GenerateMLExcelData()
 {
     using var scope = app.Services.CreateScope();
-    IProducts productsBL = (ProductsBL)scope.ServiceProvider.GetService(typeof(IProducts))!;
-    IUsers usersBL = (UsersBL)scope.ServiceProvider.GetService(typeof(IUsers))!;
-    IUserProducts userProductsBL = (UserProductsBL)scope.ServiceProvider.GetService(typeof(IUserProducts))!;
-    bool hasProductsData = productsBL.GetAll().Count != 0;
-    bool hasUserData = usersBL.GetAll().Count != 0;
-    bool hasUserProductsData = userProductsBL.GetAll().Count != 0;
+    IPredicitonDataGenerator initialDataGenerator = (PredictionDataGenerator)scope.ServiceProvider.GetService(typeof(IPredicitonDataGenerator))!;
+    //initialDataGenerator.GenerateInitialDataset();
+}
 
-    //if (!hasProductsData)
+void SeedData()
+{
+    var x = BCrypt.Net.BCrypt.HashPassword("password");
+    //using var scope = app.Services.CreateScope();
+    ////IProducts productsBL = (ProductsBL)scope.ServiceProvider.GetService(typeof(IProducts))!;
+    //IUsers usersBL = (UsersBL)scope.ServiceProvider.GetService(typeof(IUsers))!;
+    //IShoppingCarts shoppingCartsBL = (ShoppingCartsBL)scope.ServiceProvider.GetService(typeof(IShoppingCarts))!;
+    //IUserProducts userProductsBL = (UserProductsBL)scope.ServiceProvider.GetService(typeof(IUserProducts))!;
+    //IPurchases purchasesBL = (PurchasesBL)scope.ServiceProvider.GetService(typeof(IPurchases))!;
+
+    //List<User> normalUsers = usersBL.GetAll().Where(u => u.Role == eStat.Common.Enums.Roles.Purchaser).ToList();
+    //List<ShoppingCart> shoppingCarts = shoppingCartsBL.GetAll();
+    //List<UserProduct> products = userProductsBL.GetAll();
+
+    //Random random = new Random();
+    //foreach (User user in normalUsers)
     //{
-    //    List<Product> products = ExcelHelper.GetProductsFromDataset();
-
-    //    foreach (Product product in products)
+    //    ShoppingCart shoppingCart = shoppingCarts.FirstOrDefault(sc => sc.UserGUID == user.UserGUID);
+    //    if (shoppingCart == null)
+    //        continue;
+    //    int nbOfPurchases = random.Next(30, 90);
+    //    for (int i = 0; i < nbOfPurchases; i++)
     //    {
-    //        productsBL.Add(product);
-    //    }
-    //}
-
-    if (!hasUserData)
-    {
-        List<string> firstNames = new List<string> { "James", "Robert", "Mary", "Patricia", "John", "Michael",
-                                                    "Jennifer", "Linda", "David", "William", "Elizabeth", "Barbara",
-                                                    "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah",
-                                                    "Charles", "Karen"};
-
-        List<string> lastNames = new List<string> { "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia",
-                                                    "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez",
-                                                    "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore",
-                                                    "Jackson", "Martin"};
-        for (int i=0; i<20; i++)
-        {
-            UserCreate newUser = new UserCreate
-            {
-                UserGUID = Guid.NewGuid(),
-                FirstName = firstNames[i],
-                LastName = lastNames[i],
-                Email = $"{firstNames[i]}.{lastNames[i]}@gmail.com",
-                Role = eStat.Common.Enums.Roles.Retailer,
-                Password = $"{firstNames[i]}{lastNames[i]}",
-                Birthday = DateHelper.GetRandomDate(),
-                Membership = eStat.Common.Enums.Memberships.OwnerFirstTier
-            };
-
-            usersBL.Add(newUser);
-        }
-    }
-
-    //if (!hasUserProductsData)
-    //{
-    //    List<User> users = usersBL.GetAll();
-    //    List<Product> products = productsBL.GetAll();
-
-    //    foreach (User user in users)
-    //    {
-    //        List<Guid> guids = new List<Guid>();
-    //        Random randomNumber = new Random();
-    //        int nbOfProducts = randomNumber.Next(20, 50);
-    //        for (int i=0;i< nbOfProducts; i++)
+    //        int nbOfProducts = random.Next(1, 20);
+    //        for (int j = 0; j < nbOfProducts; j++)
     //        {
-    //            Random newRandomNumber = new Random();
-    //            int productIndex;
-    //            do
+    //            int userProductIndex = random.Next(0, products.Count);
+    //            UserProduct userProduct = products[userProductIndex];
+    //            while (userProduct.Quantity < 1)
     //            {
-    //                productIndex = randomNumber.Next(0, products.Count - 1);
-    //            } while (guids.Contains(products[productIndex].ProductGUID));
-    //            guids.Add(products[productIndex].ProductGUID);
-    //            Product product = products[productIndex];
-    //            newRandomNumber = new Random();
-    //            float percentage = randomNumber.Next(-10, +10);
-    //            int quantity = randomNumber.Next(0, 20);
-
-    //            UserProduct newUserProduct = new UserProduct
+    //                userProductIndex = random.Next(0, products.Count);
+    //                userProduct = products[userProductIndex];
+    //            }
+    //            ShoppingCartProductAdd scp = new ShoppingCartProductAdd
     //            {
-    //                UserProductGUID = Guid.NewGuid(),
-    //                ProductGUID = product.ProductGUID,
-    //                UserGUID = user.UserGUID,
-    //                Quantity = quantity,
-    //                Price = (float)((float)product.BasePrice + Math.Truncate((float)product.BasePrice * percentage) / 100f)
+    //                Quantity = random.Next(1, (int)Math.Ceiling(userProduct.Quantity * 1.0 / 6)),
+    //                ShoppingCartGUID = shoppingCart.ShoppingCartGUID,
+    //                UserProductGUID = userProduct.UserProductGUID,
     //            };
-    //            userProductsBL.Add(newUserProduct);
+    //            shoppingCartsBL.AddItemToCart(scp);
     //        }
-            
+    //        purchasesBL.AddPurchaseWithDate(shoppingCart.ShoppingCartGUID, GetRandomDate());
     //    }
     //}
+}
 
-    //List<User> users = usersBL.GetAll();
-    //List<Product> products = productsBL.GetAll();
+DateTime GetRandomDate()
+{
+    DateTime startDate = new DateTime(2022, 11, 1, 10, 0, 0);
+    DateTime endDate = new DateTime(2023, 7, 5, 17, 0, 0);
+    var randomTest = new Random();
 
-    //foreach (Product product in products)
-    //{
-    //    List<Guid> guids = new List<Guid>();
-    //    Random randomNumber = new Random();
-    //    int nbOfProducts = randomNumber.Next(0, 15);
-    //    for (int i = 0; i < nbOfProducts; i++)
-    //    {
-    //        Random newRandomNumber = new Random();
-    //        int userIndex;
-    //        do
-    //        {
-    //            userIndex = randomNumber.Next(0, users.Count - 1);
-    //        } while (guids.Contains(users[userIndex].UserGUID));
-    //        guids.Add(users[userIndex].UserGUID);
-    //        User user = users[userIndex];
-    //        newRandomNumber = new Random();
-    //        float percentage = randomNumber.Next(-10, +10);
-    //        int quantity = randomNumber.Next(0, 20);
+    TimeSpan timeSpan = endDate - startDate;
+    TimeSpan newSpan = new TimeSpan(0, randomTest.Next(0, (int)timeSpan.TotalMinutes), 0);
+    DateTime newDate = startDate + newSpan;
 
-    //        UserProduct newUserProduct = new UserProduct
-    //        {
-    //            UserProductGUID = Guid.NewGuid(),
-    //            ProductGUID = product.ProductGUID,
-    //            UserGUID = user.UserGUID,
-    //            Quantity = quantity,
-    //            Price = (float)((float)product.BasePrice + Math.Truncate((float)product.BasePrice * percentage) / 100f)
-    //        };
-    //        userProductsBL.Add(newUserProduct);
-    //    }
-
-    //}
+    return newDate;
 }
 
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<NotificationSystemHub>("/notification");
+});
+app.UseWebSockets();
+
 
 app.MapControllers();
 
 //await DBContextMigrationHelper.Migrate(app);
-//SeedData();
+SeedData();
+//GenerateMLExcelData();
 
 app.Run();

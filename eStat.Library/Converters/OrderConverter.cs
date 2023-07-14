@@ -9,6 +9,7 @@
                 OrderGUID = order.OrderGUID,
                 UserGUID = order.UserGUID,
                 Date = order.Date,
+                Address = order.Address,
                 Products = order.Products.Select(p => OrderProductConverter.ToDTO(p)).ToList()
             };
         }
@@ -20,6 +21,7 @@
                 OrderGUID = order.OrderGUID,
                 UserGUID = order.UserGUID,
                 Date = order.Date,
+                Address = order.Address,
                 //Products = order.Products.Select(p => OrderProductConverter.ToEntity(p)).ToList()
             };
         }

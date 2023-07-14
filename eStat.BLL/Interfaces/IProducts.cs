@@ -15,5 +15,13 @@ namespace eStat.BLL.Interfaces
         Product Add(Product product);
         void Update(Product product);
         void Delete(Guid uid);
+        Dictionary<int, decimal> GetAvgPriceLastSixMonths(Guid uid);
+        Dictionary<int, decimal> GetLowestPriceLastSixMonths(Guid uid);
+        Dictionary<int, decimal> GetHighestPriceLastSixMonths(Guid uid);
+        int GetSellsForHighestPrice(Guid productUid);
+        int GetSellsForLowestPrice(Guid productUid);
+        int GetSellsForAveragePrice(Guid productUid);
+        Dictionary<int, decimal> GetSellsLastSixMonths(Guid uid);
+        decimal GetAveragePrice(Guid productUid);
     }
 }

@@ -6,7 +6,7 @@ using eStat.Library.Models;
 
 namespace eStat.BLL.Implementations
 {
-    internal class PurchaseProductsBL : BusinessObject, IPurchaseProducts
+    public class PurchaseProductsBL : BusinessObject, IPurchaseProducts
     {
         public PurchaseProductsBL(IDALContext dalContext) : base(dalContext)
         {
@@ -45,6 +45,74 @@ namespace eStat.BLL.Implementations
         public List<PurchaseProduct> GetByUser(Guid userUid)
         {
             return _dalContext.PurchaseProducts.GetByUser(userUid).Select(p => PurchaseProductConverter.ToDTO(p)).ToList();
+        }
+
+        public List<PurchaseProduct> GetByProductLastMonth(Guid productGuid)
+        {
+            return _dalContext.PurchaseProducts.GetAll()
+                .Where(p => p.UserProduct.ProductGUID == productGuid && 
+                            (DateTime.Now - p.Purchase.Date).TotalDays <= 30)
+                .Select(p => PurchaseProductConverter.ToDTO(p))
+                .ToList();
+        }
+
+        public List<PurchaseProduct> GetByUserProductLastMonth( Guid userProductUid)
+        {
+            return _dalContext.PurchaseProducts.GetAll()
+                .Where(p => (DateTime.Now - p.Purchase.Date).TotalDays <= 30 &&
+                            p.UserProductGUID == userProductUid)
+                .Select(p => PurchaseProductConverter.ToDTO(p))
+                .ToList();
+        }
+
+        public Dictionary<Guid, int> GetByUserProductsLastMonth(List<Guid> userProductUids)
+        {
+            List<PurchaseProduct> purchaseProducts = _dalContext.PurchaseProducts.GetAll()
+                .Where(p => (DateTime.Now - p.Purchase.Date).TotalDays <= 30)
+                .Select(p => PurchaseProductConverter.ToDTO(p))
+                .ToList();
+
+            Dictionary<Guid, int> purchasesLastMonth = new();
+            foreach (PurchaseProduct purchaseProduct in purchaseProducts)
+            {
+                if (!userProductUids.Contains(purchaseProduct.UserProductGUID))
+                    continue;
+                if (purchasesLastMonth.ContainsKey(purchaseProduct.UserProductGUID))
+                {
+                    purchasesLastMonth[purchaseProduct.UserProductGUID] += purchaseProduct.Quantity;
+                    continue;
+                }
+
+                purchasesLastMonth.Add(purchaseProduct.UserProductGUID, purchaseProduct.Quantity);
+            }
+            return purchasesLastMonth;
+        }
+
+        public Dictionary<Guid, int> GetByProductsLastMonth(List<Guid> productGuids)
+        {
+            List<PurchaseProduct> purchaseProducts = _dalContext.PurchaseProducts.GetAll()
+                .Where(p => (DateTime.Now - p.Purchase.Date).TotalDays <= 30)
+                .Select(p => PurchaseProductConverter.ToDTO(p))
+                .ToList();
+
+            Dictionary<Guid, int> purchasesLastMonth = new();
+            foreach (PurchaseProduct purchaseProduct in purchaseProducts)
+            {
+                if (purchaseProduct.Product == null || purchaseProduct.Product.ProductGUID == null)
+                    continue;
+
+                Guid productGuid = purchaseProduct.Product.ProductGUID;
+                if (!productGuids.Contains(productGuid))
+                    continue;
+                if (purchasesLastMonth.ContainsKey(productGuid))
+                {
+                    purchasesLastMonth[productGuid] += purchaseProduct.Quantity;
+                    continue;
+                }
+
+                purchasesLastMonth.Add(productGuid, purchaseProduct.Quantity);
+            }
+            return purchasesLastMonth;
         }
     }
 }

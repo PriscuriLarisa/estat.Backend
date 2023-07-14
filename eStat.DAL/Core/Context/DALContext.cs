@@ -8,7 +8,7 @@ namespace eStat.DAL.Core.Context
         public IUsers Users { get; set; }
         public IProducts Products { get; set; }
         public IUserProducts UserProducts { get; set; }
-        //public ISearches Searches { get; set; }
+        public ISearches Searches { get; set; }
         //public IProductRequests ProductRequests { get; set; }
         public IOrderProducts OrderProducts { get; set; }
         public IOrders Orders { get; set; }
@@ -16,6 +16,10 @@ namespace eStat.DAL.Core.Context
         public IPurchases Purchases { get; set; }
         public IShoppingCarts ShoppingCarts { get; set; }
         public IShoppingCartProducts ShoppingCartProducts { get; set; }
+        public INotifications Notifications { get; set; }
+        public IPriceChanges PriceChanges { get; set; }
+        public IPricePredictions PricePredictions { get; set; }
+
 
         public DALContext(IUsers users,
             IProducts products,
@@ -25,7 +29,11 @@ namespace eStat.DAL.Core.Context
             IPurchaseProducts purchaseProducts,
             IPurchases purchases,
             IShoppingCarts shoppingCarts,
-            IShoppingCartProducts shoppingCartProducts)
+            IShoppingCartProducts shoppingCartProducts,
+            ISearches searches,
+            INotifications notifications,
+            IPriceChanges priceChanges,
+            IPricePredictions pricePredictions)
         {
             Users = users;
             Products = products;
@@ -38,6 +46,10 @@ namespace eStat.DAL.Core.Context
             Purchases = purchases;
             ShoppingCarts = shoppingCarts;
             ShoppingCartProducts = shoppingCartProducts;
+            Searches = searches;
+            Notifications = notifications;
+            PriceChanges = priceChanges;
+            PricePredictions = pricePredictions;
         }
     }
 }

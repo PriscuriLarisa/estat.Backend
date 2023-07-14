@@ -1,10 +1,4 @@
-﻿using eStat.DAL.Entities;
-using eStat.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using eStat.DAL.Interfaces;
 
 namespace eStat.DAL.Core.Context.Interfaces
 {
@@ -21,5 +15,9 @@ namespace eStat.DAL.Core.Context.Interfaces
         public IPurchases Purchases { get; set; }
         public IShoppingCarts ShoppingCarts { get; set; }
         public IShoppingCartProducts ShoppingCartProducts { get; set; }
+        public ISearches Searches { get; set; }
+        public INotifications Notifications { get; set; }
+        public IPriceChanges PriceChanges { get; set; }
+        public IPricePredictions PricePredictions { get; set; }
     }
 }

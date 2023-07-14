@@ -18,7 +18,10 @@ namespace eStat.DAL.Core
         public DbSet<ProductRequest> ProductRequests { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
-        
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<PriceChange> PriceChanges { get; set; }
+        public DbSet<PricePrediction> PricePredictions { get; set; }
+
         public DatabaseContext() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder dbContext)

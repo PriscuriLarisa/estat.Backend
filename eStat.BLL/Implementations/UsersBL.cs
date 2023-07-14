@@ -14,7 +14,39 @@ namespace eStat.BLL.Implementations
 
         public User Add(UserCreate user)
         {
-            return UserConverter.ToDTO(_dalContext.Users.Add(UserConverter.ToEntity(user)));
+            var existingUser = GetAll().FirstOrDefault(u => u.Email == user.Email);
+            if(existingUser != null)
+            {
+                return null;
+            }
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
+            var createdUser = UserConverter.ToDTO(_dalContext.Users.Add(UserConverter.ToEntity(user)));
+
+            ShoppingCart shoppingCart = new ShoppingCart
+            {
+                ShoppingCartGUID = Guid.Empty,
+                UserGUID = createdUser.UserGUID,
+                Products = new List<ShoppingCartProduct>(),
+                User = null
+            };
+            _dalContext.ShoppingCarts.Add(ShoppingCartConverter.ToEntity(shoppingCart));
+
+            Notification notif= new Notification
+            {
+                NotificationGUID = Guid.Empty,
+                Title = "Configure profile",
+                Text = "You are advised to set up your profile before continuing.",
+                Read = false,
+                Hyperlink = "/manageProfile",
+                HyperlinkText = "Go to my profile",
+                UserGUID = createdUser.UserGUID,
+                Date = DateTime.Now,
+            };
+            _dalContext.Notifications.Add(NotificationConverter.ToEntity(notif));
+
+            return createdUser;
         }
 
         public void Delete(Guid uid)
@@ -62,6 +94,11 @@ namespace eStat.BLL.Implementations
         public void UpdateUserInfo(UserInfo user)
         {
             _dalContext.Users.UpdateUserInfo(UserConverter.ToEntity(user));
+        }
+
+        public UserInfo GetUserByEmailAndPassword(UserLogin userLogin)
+        {
+            return UserConverter.ToDTOInfo(_dalContext.Users.GetAll().FirstOrDefault(u => u.Email == userLogin.Email && u.Password == userLogin.Password));
         }
     }
 }

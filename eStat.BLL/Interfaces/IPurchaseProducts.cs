@@ -11,5 +11,9 @@ namespace eStat.BLL.Interfaces
         void Delete(Guid uid);
         List<PurchaseProduct> GetByPurchase(Guid purchaseUid);
         List<PurchaseProduct> GetByUser(Guid userUid);
+        List<PurchaseProduct> GetByProductLastMonth(Guid productGuid);
+        Dictionary<Guid, int> GetByProductsLastMonth(List<Guid> productGuid);
+        List<PurchaseProduct> GetByUserProductLastMonth(Guid userProductUid);
+        Dictionary<Guid, int> GetByUserProductsLastMonth(List<Guid> userProductUid);
     }
 }

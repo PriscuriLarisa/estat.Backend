@@ -37,13 +37,13 @@ namespace eStat.Library.Converters
         {
             return new DAL.Entities.User
             {
-                UserGUID = user.UserGUID,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Birthday = user.Birthday,
+                UserGUID = Guid.Empty,
+                FirstName = "",
+                LastName = "",
+                Birthday = DateTime.Now,
                 Email = user.Email,
                 Role = user.Role,
-                Membership = user.Membership,
+                Membership = Common.Enums.Memberships.NoMembership,
                 Password = user.Password,
                 Orders = new List<DAL.Entities.Order>(),
                 Products = new List<DAL.Entities.UserProduct>()

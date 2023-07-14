@@ -14,6 +14,14 @@ namespace eStat.Services.Controllers
             return Ok(BusinessContext.PurchasesBL.AddPurchase(shoppingCartUid));
         }
 
+        [HttpPost("addPurchase/{shoppingCartUid}/{address}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult AddPurchaseWithAddress([FromRoute] Guid shoppingCartUid, [FromRoute] string address)
+        {
+            return Ok(BusinessContext.PurchasesBL.AddPurchaseWithAddress(shoppingCartUid, address));
+        }
+
         [HttpGet("user/{userUid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]

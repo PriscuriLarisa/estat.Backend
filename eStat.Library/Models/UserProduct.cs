@@ -11,7 +11,7 @@ namespace eStat.Library.Models
         public Guid UserProductGUID { get; set; }
         public Guid UserGUID { get; set; }
         public UserInfo? User { get; set; }
-        public Guid? ProductGUID { get; set; }
+        public Guid ProductGUID { get; set; }
         public Product? Product { get; set; }
         public int Quantity { get; set; }
         public float Price { get; set; }

@@ -22,11 +22,51 @@ namespace eStat.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("eStat.DAL.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("NotificationGUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Hyperlink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HyperlinkText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserGUID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("NotificationGUID");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("eStat.DAL.Entities.Order", b =>
                 {
                     b.Property<Guid>("OrderGUID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -63,6 +103,83 @@ namespace eStat.DAL.Migrations
                     b.HasIndex("ProductGUID");
 
                     b.ToTable("OrderProducts");
+                });
+
+            modelBuilder.Entity("eStat.DAL.Entities.PriceChange", b =>
+                {
+                    b.Property<Guid>("PriceChangeGUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("FromPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProductGUID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("ToPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserProductGUID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PriceChangeGUID");
+
+                    b.HasIndex("ProductGUID");
+
+                    b.HasIndex("UserProductGUID");
+
+                    b.ToTable("PriceChanges");
+                });
+
+            modelBuilder.Entity("eStat.DAL.Entities.PricePrediction", b =>
+                {
+                    b.Property<Guid>("PricePredictionGUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AveragePriceLastMonth")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AverageStockPerRetailerLastMonth")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CurrentAveragePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("CurrentAverageStockPerRetailer")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MyAveragePriceLastMonth")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MyCurrentPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("MySellsLastMonth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MyStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbOfPurchasesLastMonth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NbOfSearchesLastMonth")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("PredictedPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserProductID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PricePredictionGUID");
+
+                    b.ToTable("PricePredictions");
                 });
 
             modelBuilder.Entity("eStat.DAL.Entities.Product", b =>
@@ -130,6 +247,10 @@ namespace eStat.DAL.Migrations
                     b.Property<Guid>("PurchaseGUID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -280,7 +401,7 @@ namespace eStat.DAL.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<Guid?>("ProductGUID")
+                    b.Property<Guid>("ProductGUID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
@@ -322,6 +443,25 @@ namespace eStat.DAL.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("eStat.DAL.Entities.PriceChange", b =>
+                {
+                    b.HasOne("eStat.DAL.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductGUID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eStat.DAL.Entities.UserProduct", "UserProduct")
+                        .WithMany()
+                        .HasForeignKey("UserProductGUID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("UserProduct");
                 });
 
             modelBuilder.Entity("eStat.DAL.Entities.ProductRequest", b =>
@@ -420,7 +560,9 @@ namespace eStat.DAL.Migrations
                 {
                     b.HasOne("eStat.DAL.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductGUID");
+                        .HasForeignKey("ProductGUID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("eStat.DAL.Entities.User", "User")
                         .WithMany("Products")

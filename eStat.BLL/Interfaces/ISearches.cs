@@ -7,8 +7,11 @@ namespace eStat.BLL.Interfaces
         List<Search> GetAll();
         Search? GetByUid(Guid uid);
         Search Add(Search assignment);
-        void Update(Search assignment);
-        void Delete(Guid uid);
-        List<Search> GetUsersByUser(Guid userUid);
+        Search AddWithDate(Search assignment, DateTime date);
+        List<Search> GetByUser(Guid userUid);
+        List<Search> GetByUserFromLastMonth(Guid userUid);
+        List<Search> GetByProduct(Guid userUid);
+        List<Search> GetByProductFromLastMonth(Guid userUid);
+        Dictionary<Guid, int> GetNbOfSearchesByProductFromLastMonth(List<Guid> productUids);
     }
 }

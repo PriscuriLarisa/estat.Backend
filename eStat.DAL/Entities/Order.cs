@@ -12,5 +12,6 @@ namespace eStat.DAL.Entities
         public Guid? UserGUID { get; set; }
         public User? User { get; set; }
         public List<OrderProduct> Products { get; set; }
+        public string Address { get; set; }
     }
 }

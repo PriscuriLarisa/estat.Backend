@@ -7,5 +7,6 @@
         public UserInfo? User { get; set; }
         public DateTime Date { get; set; }
         public List<OrderProduct> Products { get; set; }
+        public string Address { get; set; }
     }
 }

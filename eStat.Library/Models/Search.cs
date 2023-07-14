@@ -12,7 +12,7 @@ namespace eStat.Library.Models
         public Guid ProductGUID { get; set; }
         public Product? Product { get; set; }
         public Guid UserGUID { get; set; }
-        public User? User { get; set; }
+        public UserInfo? User { get; set; }
         public DateTime Date { get; set; }
     }
 }

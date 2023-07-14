@@ -97,5 +97,85 @@ namespace eStat.Services.Controllers
             BusinessContext.ProductsBL.Delete(uid);
             return Ok();
         }
+
+        [HttpGet("avgPriceLastSixMonths/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetAvgPriceLastSixMonths([FromRoute] Guid productUid)
+        {
+            if(productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetAvgPriceLastSixMonths(productUid));
+        }
+
+        [HttpGet("highestPriceLastSixMonths/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetHighestPriceLastSixMonths([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetHighestPriceLastSixMonths(productUid));
+        }
+
+        [HttpGet("lowestPriceLastSixMonths/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetLowestPriceLastSixMonths([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetLowestPriceLastSixMonths(productUid));
+        }
+
+        [HttpGet("sellsForLowest/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetSellsForLowestPriceLastMonth([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetSellsForLowestPrice(productUid));
+        }
+
+        [HttpGet("sellsForHighest/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetSellsForHighestPriceLastMonth([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetSellsForHighestPrice(productUid));
+        }
+
+        [HttpGet("sellsForAvg/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetSellsForAveragePriceLastMonth([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetSellsForAveragePrice(productUid));
+        }
+
+        [HttpGet("sellsLast6Months/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetSellsLast6Months([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetSellsLastSixMonths(productUid));
+        }
+
+        [HttpGet("currentAveragePrice/{productUid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetCurrentAveragePrice([FromRoute] Guid productUid)
+        {
+            if (productUid == Guid.Empty)
+                return NotFound();
+            return Ok(BusinessContext.ProductsBL.GetAveragePrice(productUid));
+        }
     }
 }
